@@ -35,18 +35,14 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
 
   <style>
-    /* Pattern único (muda as cores no dark via variáveis) */
     :root{
       --p1: rgba(255, 212, 0, 0.85);
       --p2: rgba(255, 212, 0, 0.55);
-      --line: rgba(17, 17, 17, 0.45);
     }
     html.dark{
       --p1: rgba(255,255,255,0.92);
       --p2: rgba(255,255,255,0.55);
-      --line: rgba(255,255,255,0.55);
     }
-
     .sun-pattern {
       background-image:
         radial-gradient(circle at 12px 12px, var(--p1) 0 6px, transparent 7px),
@@ -54,6 +50,22 @@
       background-size: 40px 40px;
       background-position: 0 0;
       opacity: .9;
+    }
+
+    /* 1) Scroll Snap (slides) */
+    html, body { height: 100%; }
+    body { scroll-behavior: smooth; }
+    .snap-y-mandatory {
+      scroll-snap-type: y mandatory;
+      overflow-y: auto;
+      height: 100vh;
+    }
+    .snap-slide { scroll-snap-align: start; }
+
+    /* 4) Animação leve (sem libs) */
+    @media (prefers-reduced-motion: no-preference) {
+      .reveal { opacity: 0; transform: translateY(14px); transition: opacity .6s ease, transform .6s ease; }
+      .reveal.in { opacity: 1; transform: translateY(0); }
     }
   </style>
 
@@ -63,12 +75,9 @@
       const root = document.documentElement;
       const saved = localStorage.getItem("theme");
 
-      if (saved === "dark") {
-        root.classList.add("dark");
-      } else if (saved === "light") {
-        root.classList.remove("dark");
-      } else {
-        // opcional: segue o sistema quando não há preferência salva
+      if (saved === "dark") root.classList.add("dark");
+      else if (saved === "light") root.classList.remove("dark");
+      else {
         const prefersDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
         if (prefersDark) root.classList.add("dark");
       }
@@ -77,177 +86,212 @@
 </head>
 
 <body class="font-sans bg-brand-orange text-brand-ink dark:bg-black dark:text-white">
-  <!-- HEADER / TOP BAR + BOTÃO -->
-  <header class="relative h-28 md:h-36 sun-pattern">
-    <div class="absolute top-4 left-4">
-      <button
-        id="themeToggle"
-        type="button"
-        class="inline-flex items-center gap-2 px-3 py-2 text-xs font-semibold uppercase tracking-wider
-               bg-white text-black border border-black/20
-               dark:bg-black dark:text-white dark:border-white/30
-               hover:opacity-90 transition"
-        aria-pressed="false"
-      >
-        <span id="themeIcon" aria-hidden="true">☼</span>
-        <span id="themeLabel">Light</span>
-      </button>
-    </div>
-  </header>
 
-  <!-- HERO -->
-  <section class="relative">
-    <!-- Peach divider strip -->
-    <div class="h-16 bg-brand-peach dark:bg-black"></div>
+  <!-- SCROLL CONTAINER (snap) -->
+  <main class="snap-y-mandatory">
 
-    <div class="container mx-auto px-6 py-14 md:py-20">
-      <h1 class="font-serif text-5xl md:text-7xl tracking-tight text-center mb-12">
-        Solstice
-      </h1>
-
-      <div class="grid md:grid-cols-12 gap-10 items-start">
-        <!-- Left copy -->
-        <div class="md:col-span-5">
-          <p class="font-serif text-xl md:text-2xl leading-snug">
-            Discover our<br />
-            <span class="font-semibold">innovative services</span><br />
-            that brighten your day
-          </p>
-
-          <p class="mt-6 text-sm md:text-base leading-relaxed max-w-prose">
-            Our services stand out by combining quality and joy into every experience.
-            With vibrant sun motifs representing positivity, we ensure consistent excellence,
-            making your journey enjoyable and hassle-free. Each unique offering is designed
-            to meet your needs while enhancing your everyday moments, bringing warmth to your life.
-          </p>
-
-          <div class="mt-10 h-px w-40 bg-brand-yellow/70 dark:bg-white/60"></div>
-        </div>
-
-        <!-- Right decorative block -->
-        <div class="md:col-span-7 md:flex md:justify-end">
-          <div class="w-full md:w-[420px] h-44 md:h-56 sun-pattern rounded-sm"></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="h-16 bg-brand-peach dark:bg-black"></div>
-  </section>
-
-  <!-- MAIN FEATURES -->
-  <section class="bg-brand-peach dark:bg-black">
-    <div class="container mx-auto px-6 py-16 md:py-20">
-      <h2 class="font-serif text-2xl md:text-3xl mb-12">Main Features</h2>
-
-      <div class="grid md:grid-cols-3 gap-10">
-        <div class="space-y-4">
-          <div class="text-3xl leading-none">✴︎</div>
-          <p class="text-sm leading-relaxed">
-            <span class="font-semibold">Convenience:</span>
-            Experience seamless service that fits into your busy lifestyle effortlessly.
-          </p>
-        </div>
-
-        <div class="space-y-4">
-          <div class="text-3xl leading-none">✴︎</div>
-          <p class="text-sm leading-relaxed">
-            <span class="font-semibold">Quality:</span>
-            Enjoy top-notch products and services that meet the highest standards.
-          </p>
-        </div>
-
-        <div class="space-y-4">
-          <div class="text-3xl leading-none">✴︎</div>
-          <p class="text-sm leading-relaxed">
-            <span class="font-semibold">Affordability:</span>
-            Access competitive pricing without compromising on quality or service.
-          </p>
-        </div>
-      </div>
-
-      <div class="mt-14 h-px w-full bg-brand-yellow/60 dark:bg-white/50"></div>
-    </div>
-  </section>
-
-  <!-- FEATURE HIGHLIGHT 1 -->
-  <section class="bg-brand-orange dark:bg-black">
-    <div class="container mx-auto px-6 py-16 md:py-20">
-      <div class="grid md:grid-cols-12 gap-10 items-center">
-        <div class="md:col-span-5">
-          <div class="w-full h-44 md:h-56 sun-pattern"></div>
-        </div>
-
-        <div class="md:col-span-7">
-          <h3 class="font-serif text-3xl md:text-4xl leading-tight">
-            Consistency &<br /> Reliability
-          </h3>
-          <p class="mt-5 text-sm md:text-base leading-relaxed max-w-prose">
-            Our commitment to consistency and reliability ensures you always receive quality service.
-            Each interaction is designed to meet your expectations, fostering trust and satisfaction.
-            With our dedicated team, we maintain high standards, guaranteeing that every experience is
-            seamless, dependable, and tailored to your needs, making us your go-to choice.
-          </p>
-
-          <button class="mt-8 inline-flex items-center justify-center px-6 py-3 text-xs font-semibold uppercase tracking-wider
-                         bg-brand-yellow text-brand-ink border border-brand-ink/20 hover:brightness-95 transition
-                         dark:bg-white dark:text-black dark:border-white/30 dark:hover:opacity-90">
-            Learn more
+    <!-- SLIDE 1: HEADER + HERO (somam 100vh) -->
+    <section class="snap-slide min-h-screen w-full flex flex-col">
+      <!-- HEADER -->
+      <header class="relative h-20 sm:h-24 md:h-28 sun-pattern border-b border-black/10 dark:border-white/15">
+        <div class="absolute top-3 left-3 sm:top-4 sm:left-4">
+          <button
+            id="themeToggle"
+            type="button"
+            class="inline-flex items-center gap-2 px-3 py-2 text-xs font-semibold uppercase tracking-wider
+                   bg-white text-black border border-black/20
+                   dark:bg-black dark:text-white dark:border-white/30
+                   hover:opacity-90 transition
+                   focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black dark:focus-visible:ring-white
+                   focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-black"
+            aria-label="Alternar tema"
+            aria-pressed="false"
+          >
+            <span id="themeIcon" aria-hidden="true">☼</span>
+            <span id="themeLabel">Light</span>
           </button>
         </div>
+      </header>
+
+      <!-- HERO (ocupa o resto do viewport) -->
+      <div class="flex-1 flex items-center">
+        <section class="w-full">
+          <div class="container mx-auto px-6 py-10 sm:py-12 md:py-16">
+            <!-- 2) Hero “statement” (mais impacto, menos texto) -->
+            <h1 class="font-serif text-5xl sm:text-6xl md:text-7xl tracking-tight leading-none text-center mb-8 sm:mb-10 reveal">
+              Solstice
+            </h1>
+
+            <div class="grid md:grid-cols-12 gap-10 items-center">
+              <div class="md:col-span-5 reveal">
+                <p class="font-serif text-xl sm:text-2xl leading-snug">
+                  Innovative services,<br />
+                  <span class="font-semibold">built with consistency</span><br />
+                  and crafted for ease.
+                </p>
+
+                <!-- 3) Mobile: texto mais curto por padrão; completo no desktop -->
+                <p class="mt-5 text-sm leading-relaxed max-w-prose md:hidden">
+                  Quality-first service, designed to feel effortless—everyday.
+                </p>
+
+                <p class="mt-5 text-sm md:text-base leading-relaxed max-w-prose hidden md:block">
+                  Our services stand out by combining quality and joy into every experience.
+                  With vibrant sun motifs representing positivity, we ensure consistent excellence,
+                  making your journey enjoyable and hassle-free. Each unique offering is designed
+                  to meet your needs while enhancing your everyday moments.
+                </p>
+
+                <div class="mt-8 h-px w-40 bg-brand-yellow/70 dark:bg-white/60"></div>
+
+                <div class="mt-8 flex gap-3">
+                  <a
+                    href="#features"
+                    class="inline-flex items-center justify-center px-6 py-3 text-xs font-semibold uppercase tracking-wider
+                           bg-brand-yellow text-brand-ink border border-brand-ink/20 hover:brightness-95 transition
+                           dark:bg-white dark:text-black dark:border-white/30 dark:hover:opacity-90"
+                  >
+                    Explore
+                  </a>
+                  <a
+                    href="#contact"
+                    class="inline-flex items-center justify-center px-6 py-3 text-xs font-semibold uppercase tracking-wider
+                           bg-transparent text-brand-ink border border-brand-ink/30 hover:bg-white/20 transition
+                           dark:text-white dark:border-white/30 dark:hover:bg-white/10"
+                  >
+                    Contact
+                  </a>
+                </div>
+              </div>
+
+              <div class="md:col-span-7 md:flex md:justify-end reveal">
+                <div class="w-full md:w-[420px] h-40 sm:h-44 md:h-56 sun-pattern rounded-sm border border-black/10 dark:border-white/15"></div>
+              </div>
+            </div>
+
+            <!-- hint sutil -->
+            <div class="mt-10 flex justify-center">
+              <div class="text-xs opacity-70 border border-black/20 dark:border-white/25 px-3 py-1 rounded-full">
+                Scroll ↓
+              </div>
+            </div>
+          </div>
+        </section>
       </div>
-    </div>
+    </section>
 
-    <div class="h-16 bg-brand-peach dark:bg-black"></div>
-  </section>
+    <!-- SLIDE 2: MAIN FEATURES -->
+    <section id="features" class="snap-slide min-h-screen w-full bg-brand-peach dark:bg-black flex items-center">
+      <div class="container mx-auto px-6 py-12 md:py-16">
+        <h2 class="font-serif text-2xl md:text-3xl mb-10 reveal">Main Features</h2>
 
-  <!-- FEATURE HIGHLIGHT 2 -->
-  <section class="bg-brand-peach dark:bg-black">
-    <div class="container mx-auto px-6 py-16 md:py-20">
-      <div class="grid md:grid-cols-12 gap-10 items-end">
-        <div class="md:col-span-7">
-          <div class="w-56 h-28 sun-pattern mb-10"></div>
+        <div class="grid md:grid-cols-3 gap-10">
+          <div class="space-y-4 reveal">
+            <div class="text-3xl leading-none">✴︎</div>
+            <p class="text-sm md:text-base leading-relaxed">
+              <span class="font-semibold">Convenience:</span>
+              Seamless service that fits into your day.
+            </p>
+          </div>
 
-          <h3 class="font-serif text-3xl md:text-4xl">Effortless Convenience</h3>
-          <p class="mt-5 text-sm md:text-base leading-relaxed max-w-prose">
-            Experience unmatched convenience with our services designed to simplify your daily routine.
-            Enjoy seamless access to everything you need, making life easier and more enjoyable every step of the way.
-          </p>
+          <div class="space-y-4 reveal">
+            <div class="text-3xl leading-none">✴︎</div>
+            <p class="text-sm md:text-base leading-relaxed">
+              <span class="font-semibold">Quality:</span>
+              High standards, consistently delivered.
+            </p>
+          </div>
+
+          <div class="space-y-4 reveal">
+            <div class="text-3xl leading-none">✴︎</div>
+            <p class="text-sm md:text-base leading-relaxed">
+              <span class="font-semibold">Affordability:</span>
+              Great value without compromise.
+            </p>
+          </div>
         </div>
 
-        <div class="md:col-span-5 md:flex md:justify-end">
-          <button class="inline-flex items-center justify-center px-7 py-3 text-xs font-semibold uppercase tracking-wider
-                         bg-brand-yellow text-brand-ink border border-brand-ink/20 hover:brightness-95 transition
-                         dark:bg-white dark:text-black dark:border-white/30 dark:hover:opacity-90">
-            Discover more
-          </button>
+        <div class="mt-12 h-px w-full bg-brand-yellow/60 dark:bg-white/50"></div>
+      </div>
+    </section>
+
+    <!-- SLIDE 3: FEATURE HIGHLIGHT 1 -->
+    <section class="snap-slide min-h-screen w-full bg-brand-orange dark:bg-black flex items-center">
+      <div class="container mx-auto px-6 py-12 md:py-16">
+        <div class="grid md:grid-cols-12 gap-10 items-center">
+          <div class="md:col-span-5 reveal">
+            <div class="w-full h-40 sm:h-44 md:h-56 sun-pattern border border-black/10 dark:border-white/15"></div>
+          </div>
+
+          <div class="md:col-span-7 reveal">
+            <h3 class="font-serif text-3xl md:text-4xl leading-tight">
+              Consistency &<br /> Reliability
+            </h3>
+            <p class="mt-5 text-sm md:text-base leading-relaxed max-w-prose">
+              Designed to meet expectations every time—clear, dependable, and tailored to your needs.
+            </p>
+
+            <button class="mt-8 inline-flex items-center justify-center px-6 py-3 text-xs font-semibold uppercase tracking-wider
+                           bg-brand-yellow text-brand-ink border border-brand-ink/20 hover:brightness-95 transition
+                           dark:bg-white dark:text-black dark:border-white/30 dark:hover:opacity-90
+                           focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black dark:focus-visible:ring-white
+                           focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-black">
+              Learn more
+            </button>
+          </div>
         </div>
       </div>
-    </div>
+    </section>
 
-    <div class="h-16 bg-brand-orange dark:bg-black"></div>
-  </section>
+    <!-- SLIDE 4: FEATURE HIGHLIGHT 2 -->
+    <section class="snap-slide min-h-screen w-full bg-brand-peach dark:bg-black flex items-center">
+      <div class="container mx-auto px-6 py-12 md:py-16">
+        <div class="grid md:grid-cols-12 gap-10 items-end">
+          <div class="md:col-span-7 reveal">
+            <div class="w-56 h-24 md:h-28 sun-pattern mb-8 border border-black/10 dark:border-white/15"></div>
 
-  <!-- GET IN TOUCH -->
-  <section class="bg-brand-orange dark:bg-black">
-    <div class="container mx-auto px-6 py-16 md:py-20">
-      <div class="grid md:grid-cols-12 gap-10 items-stretch">
-        <div class="md:col-span-6">
-          <h2 class="font-serif text-3xl md:text-4xl mb-10">Get in Touch</h2>
-          <ul class="text-sm md:text-base space-y-2">
-            <li>123-456-7890</li>
-            <li>hello@reallygreatsite</li>
-            <li>@reallygreatsite</li>
-          </ul>
+            <h3 class="font-serif text-3xl md:text-4xl">Effortless Convenience</h3>
+            <p class="mt-5 text-sm md:text-base leading-relaxed max-w-prose">
+              Everything you need, with fewer steps—simple by design.
+            </p>
+          </div>
 
-          <div class="mt-12 h-px w-40 bg-brand-yellow/70 dark:bg-white/60"></div>
-        </div>
-
-        <div class="md:col-span-6">
-          <div class="w-full h-64 md:h-full sun-pattern rounded-sm"></div>
+          <div class="md:col-span-5 md:flex md:justify-end reveal">
+            <button class="inline-flex items-center justify-center px-7 py-3 text-xs font-semibold uppercase tracking-wider
+                           bg-brand-yellow text-brand-ink border border-brand-ink/20 hover:brightness-95 transition
+                           dark:bg-white dark:text-black dark:border-white/30 dark:hover:opacity-90
+                           focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black dark:focus-visible:ring-white
+                           focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-black">
+              Discover more
+            </button>
+          </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
+
+    <!-- SLIDE 5: CONTACT -->
+    <section id="contact" class="snap-slide min-h-screen w-full bg-brand-orange dark:bg-black flex items-center">
+      <div class="container mx-auto px-6 py-12 md:py-16">
+        <div class="grid md:grid-cols-12 gap-10 items-stretch">
+          <div class="md:col-span-6 reveal">
+            <h2 class="font-serif text-3xl md:text-4xl mb-8">Get in Touch</h2>
+            <ul class="text-sm md:text-base space-y-2">
+              <li>123-456-7890</li>
+              <li>hello@reallygreatsite</li>
+              <li>@reallygreatsite</li>
+            </ul>
+
+            <div class="mt-10 h-px w-40 bg-brand-yellow/70 dark:bg-white/60"></div>
+          </div>
+
+          <div class="md:col-span-6 reveal">
+            <div class="w-full h-56 md:h-full sun-pattern rounded-sm border border-black/10 dark:border-white/15"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
 
   <!-- Toggle JS -->
   <script>
@@ -270,6 +314,25 @@
     });
 
     syncButton();
+
+    // 4) Reveal on scroll (IntersectionObserver)
+    (function () {
+      const els = document.querySelectorAll(".reveal");
+      if (!("IntersectionObserver" in window)) {
+        els.forEach(el => el.classList.add("in"));
+        return;
+      }
+      const io = new IntersectionObserver((entries) => {
+        for (const e of entries) {
+          if (e.isIntersecting) {
+            e.target.classList.add("in");
+            io.unobserve(e.target);
+          }
+        }
+      }, { threshold: 0.15 });
+
+      els.forEach(el => io.observe(el));
+    })();
   </script>
 </body>
 </html>
