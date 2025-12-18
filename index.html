@@ -52,7 +52,7 @@
       opacity: .9;
     }
 
-    /* 1) Scroll Snap (slides) */
+    /* Scroll Snap (slides) */
     html, body { height: 100%; }
     body { scroll-behavior: smooth; }
     .snap-y-mandatory {
@@ -62,14 +62,14 @@
     }
     .snap-slide { scroll-snap-align: start; }
 
-    /* 4) Animação leve (sem libs) */
+    /* Reveal (sem libs) */
     @media (prefers-reduced-motion: no-preference) {
       .reveal { opacity: 0; transform: translateY(14px); transition: opacity .6s ease, transform .6s ease; }
       .reveal.in { opacity: 1; transform: translateY(0); }
     }
   </style>
 
-  <!-- Theme init (antes de renderizar) -->
+  <!-- Theme init (antes do paint) -->
   <script>
     (function () {
       const root = document.documentElement;
@@ -86,8 +86,6 @@
 </head>
 
 <body class="font-sans bg-brand-orange text-brand-ink dark:bg-black dark:text-white">
-
-  <!-- SCROLL CONTAINER (snap) -->
   <main class="snap-y-mandatory">
 
     <!-- SLIDE 1: HEADER + HERO (somam 100vh) -->
@@ -113,11 +111,10 @@
         </div>
       </header>
 
-      <!-- HERO (ocupa o resto do viewport) -->
+      <!-- HERO -->
       <div class="flex-1 flex items-center">
         <section class="w-full">
           <div class="container mx-auto px-6 py-10 sm:py-12 md:py-16">
-            <!-- 2) Hero “statement” (mais impacto, menos texto) -->
             <h1 class="font-serif text-5xl sm:text-6xl md:text-7xl tracking-tight leading-none text-center mb-8 sm:mb-10 reveal">
               Solstice
             </h1>
@@ -130,7 +127,6 @@
                   and crafted for ease.
                 </p>
 
-                <!-- 3) Mobile: texto mais curto por padrão; completo no desktop -->
                 <p class="mt-5 text-sm leading-relaxed max-w-prose md:hidden">
                   Quality-first service, designed to feel effortless—everyday.
                 </p>
@@ -169,7 +165,6 @@
               </div>
             </div>
 
-            <!-- hint sutil -->
             <div class="mt-10 flex justify-center">
               <div class="text-xs opacity-70 border border-black/20 dark:border-white/25 px-3 py-1 rounded-full">
                 Scroll ↓
@@ -180,96 +175,115 @@
       </div>
     </section>
 
-    <!-- SLIDE 2: MAIN FEATURES -->
+    <!-- SLIDE 2: FEATURES (3 EM 1 / 100vw x 100vh) -->
     <section id="features" class="snap-slide min-h-screen w-full bg-brand-peach dark:bg-black flex items-center">
-      <div class="container mx-auto px-6 py-12 md:py-16">
-        <h2 class="font-serif text-2xl md:text-3xl mb-10 reveal">Main Features</h2>
+      <div class="container mx-auto px-6 py-10 md:py-14 w-full">
+        <div class="flex items-end justify-between gap-6 mb-6 md:mb-10 reveal">
+          <h2 class="font-serif text-2xl md:text-3xl leading-tight">
+            Main Features
+          </h2>
 
-        <div class="grid md:grid-cols-3 gap-10">
-          <div class="space-y-4 reveal">
-            <div class="text-3xl leading-none">✴︎</div>
-            <p class="text-sm md:text-base leading-relaxed">
-              <span class="font-semibold">Convenience:</span>
-              Seamless service that fits into your day.
-            </p>
-          </div>
+          <div class="hidden md:block h-px flex-1 bg-black/20 dark:bg-white/20"></div>
 
-          <div class="space-y-4 reveal">
-            <div class="text-3xl leading-none">✴︎</div>
-            <p class="text-sm md:text-base leading-relaxed">
-              <span class="font-semibold">Quality:</span>
-              High standards, consistently delivered.
-            </p>
-          </div>
-
-          <div class="space-y-4 reveal">
-            <div class="text-3xl leading-none">✴︎</div>
-            <p class="text-sm md:text-base leading-relaxed">
-              <span class="font-semibold">Affordability:</span>
-              Great value without compromise.
-            </p>
-          </div>
+          <a
+            href="#contact"
+            class="shrink-0 inline-flex items-center justify-center px-5 py-2 text-xs font-semibold uppercase tracking-wider
+                   bg-transparent border border-black/30 text-black hover:bg-black/5
+                   dark:border-white/30 dark:text-white dark:hover:bg-white/10 transition"
+          >
+            Get in touch
+          </a>
         </div>
 
-        <div class="mt-12 h-px w-full bg-brand-yellow/60 dark:bg-white/50"></div>
+        <!-- GRID RESPONSIVO -->
+        <div class="grid gap-6 lg:grid-cols-3 items-stretch">
+          <!-- PANEL 1 -->
+          <article class="reveal rounded-sm border border-black/10 dark:border-white/15 bg-white/30 dark:bg-white/5 p-6 md:p-8">
+            <div class="flex items-start justify-between gap-6">
+              <div>
+                <div class="text-3xl leading-none mb-3">✴︎</div>
+                <h3 class="font-serif text-xl md:text-2xl mb-3">Core Value</h3>
+                <p class="text-sm md:text-base leading-relaxed max-w-prose">
+                  Convenience, quality, and affordability—delivered with consistency.
+                </p>
+              </div>
+
+              <div class="hidden sm:block w-24 h-24 sun-pattern rounded-sm border border-black/10 dark:border-white/15"></div>
+            </div>
+
+            <div class="mt-6 space-y-3 text-sm md:text-base">
+              <p><span class="font-semibold">Convenience:</span> Seamless service that fits your day.</p>
+              <p><span class="font-semibold">Quality:</span> High standards, consistently delivered.</p>
+              <p><span class="font-semibold">Affordability:</span> Great value without compromise.</p>
+            </div>
+
+            <div class="mt-8 h-px w-full bg-black/20 dark:bg-white/20"></div>
+          </article>
+
+          <!-- PANEL 2 -->
+          <article class="reveal rounded-sm border border-black/10 dark:border-white/15 bg-brand-orange/60 dark:bg-white/5 p-6 md:p-8 flex flex-col">
+            <div class="flex items-start justify-between gap-6">
+              <div>
+                <h3 class="font-serif text-2xl md:text-3xl leading-tight">
+                  Consistency &<br /> Reliability
+                </h3>
+                <p class="mt-4 text-sm md:text-base leading-relaxed max-w-prose">
+                  Clear, dependable delivery—built to meet expectations every time.
+                </p>
+              </div>
+
+              <div class="hidden sm:block w-24 h-24 sun-pattern rounded-sm border border-black/10 dark:border-white/15"></div>
+            </div>
+
+            <div class="mt-6 flex-1">
+              <div class="w-full h-32 md:h-40 sun-pattern rounded-sm border border-black/10 dark:border-white/15"></div>
+            </div>
+
+            <div class="mt-6">
+              <button class="inline-flex items-center justify-center w-full px-6 py-3 text-xs font-semibold uppercase tracking-wider
+                             bg-brand-yellow text-brand-ink border border-brand-ink/20 hover:brightness-95 transition
+                             dark:bg-white dark:text-black dark:border-white/30 dark:hover:opacity-90
+                             focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black dark:focus-visible:ring-white
+                             focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-black">
+                Learn more
+              </button>
+            </div>
+          </article>
+
+          <!-- PANEL 3 -->
+          <article class="reveal rounded-sm border border-black/10 dark:border-white/15 bg-white/30 dark:bg-white/5 p-6 md:p-8 flex flex-col">
+            <div class="flex items-start justify-between gap-6">
+              <div>
+                <h3 class="font-serif text-2xl md:text-3xl leading-tight">
+                  Effortless Convenience
+                </h3>
+                <p class="mt-4 text-sm md:text-base leading-relaxed max-w-prose">
+                  Everything you need, with fewer steps—simple by design.
+                </p>
+              </div>
+
+              <div class="hidden sm:block w-24 h-24 sun-pattern rounded-sm border border-black/10 dark:border-white/15"></div>
+            </div>
+
+            <div class="mt-6 flex-1">
+              <div class="w-full h-32 md:h-40 sun-pattern rounded-sm border border-black/10 dark:border-white/15"></div>
+            </div>
+
+            <div class="mt-6">
+              <button class="inline-flex items-center justify-center w-full px-6 py-3 text-xs font-semibold uppercase tracking-wider
+                             bg-brand-yellow text-brand-ink border border-brand-ink/20 hover:brightness-95 transition
+                             dark:bg-white dark:text-black dark:border-white/30 dark:hover:opacity-90
+                             focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black dark:focus-visible:ring-white
+                             focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-black">
+                Discover more
+              </button>
+            </div>
+          </article>
+        </div>
       </div>
     </section>
 
-    <!-- SLIDE 3: FEATURE HIGHLIGHT 1 -->
-    <section class="snap-slide min-h-screen w-full bg-brand-orange dark:bg-black flex items-center">
-      <div class="container mx-auto px-6 py-12 md:py-16">
-        <div class="grid md:grid-cols-12 gap-10 items-center">
-          <div class="md:col-span-5 reveal">
-            <div class="w-full h-40 sm:h-44 md:h-56 sun-pattern border border-black/10 dark:border-white/15"></div>
-          </div>
-
-          <div class="md:col-span-7 reveal">
-            <h3 class="font-serif text-3xl md:text-4xl leading-tight">
-              Consistency &<br /> Reliability
-            </h3>
-            <p class="mt-5 text-sm md:text-base leading-relaxed max-w-prose">
-              Designed to meet expectations every time—clear, dependable, and tailored to your needs.
-            </p>
-
-            <button class="mt-8 inline-flex items-center justify-center px-6 py-3 text-xs font-semibold uppercase tracking-wider
-                           bg-brand-yellow text-brand-ink border border-brand-ink/20 hover:brightness-95 transition
-                           dark:bg-white dark:text-black dark:border-white/30 dark:hover:opacity-90
-                           focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black dark:focus-visible:ring-white
-                           focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-black">
-              Learn more
-            </button>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- SLIDE 4: FEATURE HIGHLIGHT 2 -->
-    <section class="snap-slide min-h-screen w-full bg-brand-peach dark:bg-black flex items-center">
-      <div class="container mx-auto px-6 py-12 md:py-16">
-        <div class="grid md:grid-cols-12 gap-10 items-end">
-          <div class="md:col-span-7 reveal">
-            <div class="w-56 h-24 md:h-28 sun-pattern mb-8 border border-black/10 dark:border-white/15"></div>
-
-            <h3 class="font-serif text-3xl md:text-4xl">Effortless Convenience</h3>
-            <p class="mt-5 text-sm md:text-base leading-relaxed max-w-prose">
-              Everything you need, with fewer steps—simple by design.
-            </p>
-          </div>
-
-          <div class="md:col-span-5 md:flex md:justify-end reveal">
-            <button class="inline-flex items-center justify-center px-7 py-3 text-xs font-semibold uppercase tracking-wider
-                           bg-brand-yellow text-brand-ink border border-brand-ink/20 hover:brightness-95 transition
-                           dark:bg-white dark:text-black dark:border-white/30 dark:hover:opacity-90
-                           focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black dark:focus-visible:ring-white
-                           focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-black">
-              Discover more
-            </button>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- SLIDE 5: CONTACT -->
+    <!-- SLIDE 3: CONTACT -->
     <section id="contact" class="snap-slide min-h-screen w-full bg-brand-orange dark:bg-black flex items-center">
       <div class="container mx-auto px-6 py-12 md:py-16">
         <div class="grid md:grid-cols-12 gap-10 items-stretch">
@@ -293,7 +307,7 @@
 
   </main>
 
-  <!-- Toggle JS -->
+  <!-- Toggle + Reveal JS -->
   <script>
     const root = document.documentElement;
     const btn = document.getElementById("themeToggle");
@@ -315,7 +329,6 @@
 
     syncButton();
 
-    // 4) Reveal on scroll (IntersectionObserver)
     (function () {
       const els = document.querySelectorAll(".reveal");
       if (!("IntersectionObserver" in window)) {
